@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Optimasi Beban 3 Fasa</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         HALAMAN PEMBUKA
+    ========================== -->
+
+    <section class="landing-page" id="landingPage">
+
+        <div class="landing-content">
+
+            <div class="phase-icon">
+                <span>R</span>
+                <span>S</span>
+                <span>T</span>
+            </div>
+
+            <p class="mini-title">
+                MINI RISET ALJABAR LINEAR
+            </p>
+
+            <h1>
+                Optimasi Pembagian<br>
+                <span>Beban 3 Fasa</span>
+            </h1>
+
+            <p class="landing-description">
+                Implementasi Matriks untuk Optimasi Pembagian Beban
+                pada Panel Listrik 3 Fasa Berbasis Web.
+            </p>
+
+            <p class="landing-info">
+                Sistem ini dirancang untuk membantu menentukan pembagian
+                beban listrik pada fasa R, S, dan T agar distribusi daya
+                menjadi lebih seimbang.
+            </p>
+
+            <button
+                class="start-button"
+                onclick="mulaiOptimasi()"
+            >
+                Mulai Optimasi
+                <span>→</span>
+            </button>
+
+            <div class="feature-list">
+
+                <div class="feature">
+                    <strong>01</strong>
+                    <span>Input Beban</span>
+                </div>
+
+                <div class="feature">
+                    <strong>02</strong>
+                    <span>Perhitungan Matriks</span>
+                </div>
+
+                <div class="feature">
+                    <strong>03</strong>
+                    <span>Optimasi Fasa</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="landing-visual">
+
+            <div class="grid-circle"></div>
+
+            <div class="phase-card phase-r">
+                <span>R</span>
+                <small>FASA</small>
+            </div>
+
+            <div class="phase-card phase-s">
+                <span>S</span>
+                <small>FASA</small>
+            </div>
+
+            <div class="phase-card phase-t">
+                <span>T</span>
+                <small>FASA</small>
+            </div>
+
+            <div class="power-display">
+
+                <small>DISTRIBUSI DAYA</small>
+
+                <strong>3 Φ</strong>
+
+                <span>R • S • T</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         APLIKASI UTAMA
+    ========================== -->
+
+    <main
+        class="application"
+        id="application"
+        style="display: none;"
+    >
+
+        <!-- Header aplikasi -->
+
+        <header class="app-header">
+
+            <div class="app-logo">
+                3Φ
+            </div>
+
+            <div>
+
+                <h1>
+                    Optimasi Pembagian Beban 3 Fasa
+                </h1>
+
+                <p>
+                    Implementasi Matriks Berbasis Web
+                </p>
+
+            </div>
+
+        </header>
+
+
+
+        <div class="container">
+
+
+            <!-- =========================
+                 DATA BEBAN
+            ========================== -->
+
+            <section class="card">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span class="section-number">
+                            01
+                        </span>
+
+                        <h2>
+                            Data Beban Listrik
+                        </h2>
+
+                    </div>
+
+                    <p>
+                        Masukkan data beban yang akan dianalisis
+                        dan dioptimalkan.
+                    </p>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table id="loadTable">
+
+                        <thead>
+
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Beban</th>
+                                <th>Daya (W)</th>
+                                <th>Fasa Awal</th>
+                                <th>Aksi</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="loadBody">
+
+                            <tr>
+
+                                <td>1</td>
+
+                                <td>
+                                    <input
+                                        type="text"
+                                        class="load-name"
+                                        value="Lampu"
+                                    >
+                                </td>
+
+                                <td>
+                                    <input
+                                        type="number"
+                                        class="load-power"
+                                        value="300"
+                                        min="0"
+                                    >
+                                </td>
+
+                                <td>
+
+                                    <select class="load-phase">
+
+                                        <option value="R">
+                                            R
+                                        </option>
+
+                                        <option value="S">
+                                            S
+                                        </option>
+
+                                        <option value="T">
+                                            T
+                                        </option>
+
+                                    </select>
+
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        class="delete-btn"
+                                        onclick="hapusBaris(this)"
+                                    >
+                                        Hapus
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>2</td>
+
+                                <td>
+                                    <input
+                                        type="text"
+                                        class="load-name"
+                                        value="AC"
+                                    >
+                                </td>
+
+                                <td>
+                                    <input
+                                        type="number"
+                                        class="load-power"
+                                        value="900"
+                                        min="0"
+                                    >
+                                </td>
+
+                                <td>
+
+                                    <select class="load-phase">
+
+                                        <option value="R">
+                                            R
+                                        </option>
+
+                                        <option
+                                            value="S"
+                                            selected
+                                        >
+                                            S
+                                        </option>
+
+                                        <option value="T">
+                                            T
+                                        </option>
+
+                                    </select>
+
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        class="delete-btn"
+                                        onclick="hapusBaris(this)"
+                                    >
+                                        Hapus
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>3</td>
+
+                                <td>
+                                    <input
+                                        type="text"
+                                        class="load-name"
+                                        value="Panel Kontrol"
+                                    >
+                                </td>
+
+                                <td>
+                                    <input
+                                        type="number"
+                                        class="load-power"
+                                        value="1200"
+                                        min="0"
+                                    >
+                                </td>
+
+                                <td>
+
+                                    <select class="load-phase">
+
+                                        <option value="R">
+                                            R
+                                        </option>
+
+                                        <option
+                                            value="S"
+                                            selected
+                                        >
+                                            S
+                                        </option>
+
+                                        <option value="T">
+                                            T
+                                        </option>
+
+                                    </select>
+
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        class="delete-btn"
+                                        onclick="hapusBaris(this)"
+                                    >
+                                        Hapus
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>4</td>
+
+                                <td>
+                                    <input
+                                        type="text"
+                                        class="load-name"
+                                        value="Komputer"
+                                    >
+                                </td>
+
+                                <td>
+                                    <input
+                                        type="number"
+                                        class="load-power"
+                                        value="600"
+                                        min="0"
+                                    >
+                                </td>
+
+                                <td>
+
+                                    <select class="load-phase">
+
+                                        <option value="R">
+                                            R
+                                        </option>
+
+                                        <option value="S">
+                                            S
+                                        </option>
+
+                                        <option
+                                            value="T"
+                                            selected
+                                        >
+                                            T
+                                        </option>
+
+                                    </select>
+
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        class="delete-btn"
+                                        onclick="hapusBaris(this)"
+                                    >
+                                        Hapus
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>5</td>
+
+                                <td>
+                                    <input
+                                        type="text"
+                                        class="load-name"
+                                        value="Pompa"
+                                    >
+                                </td>
+
+                                <td>
+                                    <input
+                                        type="number"
+                                        class="load-power"
+                                        value="600"
+                                        min="0"
+                                    >
+                                </td>
+
+                                <td>
+
+                                    <select class="load-phase">
+
+                                        <option value="R">
+                                            R
+                                        </option>
+
+                                        <option value="S">
+                                            S
+                                        </option>
+
+                                        <option
+                                            value="T"
+                                            selected
+                                        >
+                                            T
+                                        </option>
+
+                                    </select>
+
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        class="delete-btn"
+                                        onclick="hapusBaris(this)"
+                                    >
+                                        Hapus
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="button-group">
+
+                    <button
+                        class="add-btn"
+                        onclick="tambahBaris()"
+                    >
+                        + Tambah Beban
+                    </button>
+
+                    <button
+                        class="optimize-btn"
+                        onclick="optimasi()"
+                    >
+                        ⚡ Optimasi Pembagian Beban
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 HASIL OPTIMASI
+            ========================== -->
+
+            <section class="card">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span class="section-number">
+                            02
+                        </span>
+
+                        <h2>
+                            Hasil Optimasi
+                        </h2>
+
+                    </div>
+
+                    <p>
+                        Hasil pembagian beban berdasarkan
+                        perhitungan matriks.
+                    </p>
+
+                </div>
+
+
+                <div class="result-grid">
+
+                    <div class="result-card">
+
+                        <span>Fasa R</span>
+
+                        <strong id="phaseR">
+                            -
+                        </strong>
+
+                        <small>
+                            Watt
+                        </small>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <span>Fasa S</span>
+
+                        <strong id="phaseS">
+                            -
+                        </strong>
+
+                        <small>
+                            Watt
+                        </small>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <span>Fasa T</span>
+
+                        <strong id="phaseT">
+                            -
+                        </strong>
+
+                        <small>
+                            Watt
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="calculation-info">
+
+                    <div>
+
+                        <span>
+                            Total Beban
+                        </span>
+
+                        <strong id="totalPower">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Rata-rata Ideal
+                        </span>
+
+                        <strong id="averagePower">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Deviasi Maksimum
+                        </span>
+
+                        <strong id="maxDeviation">
+                            -
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="balanceStatus"
+                    class="status-box"
+                >
+                    Menunggu proses optimasi...
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 REKOMENDASI
+            ========================== -->
+
+            <section class="card">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span class="section-number">
+                            03
+                        </span>
+
+                        <h2>
+                            Rekomendasi Pembagian Beban
+                        </h2>
+
+                    </div>
+
+                    <p>
+                        Hasil pembagian fasa yang diperoleh
+                        dari proses optimasi.
+                    </p>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>No</th>
+                                <th>Nama Beban</th>
+                                <th>Daya (W)</th>
+                                <th>Fasa Awal</th>
+                                <th>Fasa Rekomendasi</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="recommendationBody">
+
+                            <tr>
+
+                                <td colspan="5">
+
+                                    Hasil rekomendasi akan muncul
+                                    setelah proses optimasi.
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 MATRIKS
+            ========================== -->
+
+            <section class="card">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span class="section-number">
+                            04
+                        </span>
+
+                        <h2>
+                            Representasi Matriks
+                        </h2>
+
+                    </div>
+
+                    <p>
+                        Representasi matematis pembagian beban
+                        terhadap fasa R, S, dan T.
+                    </p>
+
+                </div>
+
+
+                <div class="matrix-area">
+
+                    <div>
+
+                        <h3>
+                            Vektor Beban (P)
+                        </h3>
+
+                        <div
+                            id="loadVector"
+                            class="matrix"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Matriks Pembagian (A)
+                        </h3>
+
+                        <div
+                            id="assignmentMatrix"
+                            class="matrix"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Hasil AᵀP
+                        </h3>
+
+                        <div
+                            id="matrixResult"
+                            class="matrix"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <footer class="footer">
+
+            <p>
+                Mini Riset Aljabar Linear
+            </p>
+
+            <p>
+                Implementasi Matriks untuk Optimasi Pembagian
+                Beban pada Panel Listrik 3 Fasa Berbasis Web
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <!-- JavaScript -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>
